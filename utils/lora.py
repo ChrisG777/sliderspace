@@ -51,11 +51,15 @@ TRAINING_METHODS = Literal[
 ]
 
 def load_ortho_dict(n):
-    path = f'/share/u/rohit/orthogonal_basis/{n:09}.ckpt'
+    folder = "orthogonal_basis"
+    os.makedirs(folder, exist_ok=True)
+    
+    path = os.path.join(folder, f'{n:09}.ckpt')
+    
     if os.path.isfile(path):
         return torch.load(path)
     else:
-        x = torch.randn(n,n)
+        x = torch.randn(n, n)
         eig, _, _ = torch.svd(x)
         torch.save(eig, path)
         return eig
